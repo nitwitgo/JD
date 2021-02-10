@@ -1,19 +1,24 @@
-#必须要的默认定时任务请勿删除
-52 */1 * * * docker_entrypoint.sh >> /scripts/logs/default_task.log 2>&1
-# 每3天的23:50分清理一次日志
-50 23 */3 * * rm -rf /scripts/logs/*.log
+# 每3天的23:50分清理一次日志(互助码不清理，proc_file.sh对该文件进行了去重)
+50 23 */3 * * find /scripts/logs -name '*.log' | grep -v 'sharecode' | xargs rm -rf
 
 ##############短期活动##############
-#年货节(活动时间：2021年1月9日-2021年2月9日)
-10 8 * * * node /scripts/jd_nh.js >> /scripts/logs/jd_nh.log 2>&1
-#京东炸年兽集爆竹(活动时间:2021-1-18至2021-2-11)怕有遗漏故多运行几次
-0 * * * * node /scripts/jd_nian.js >> /scripts/logs/jd_nian.log 2>&1
-#专门收集每秒产生的爆竹(1小时运行一次)
-30 * * * * node /scripts/jd_nianCollect.js >> /scripts/logs/jd_nianCollect.log 2>&1
+# 小鸽有礼(活动时间：2021年1月15日至2021年2月19日)
+5 7 * * * node /scripts/jd_xg.js >> /scripts/logs/jd_xg.log 2>&1
+# 小鸽有礼2(活动时间：2021年1月28日～2021年2月28日)
+34 9 * * * node /scripts/jd_xgyl.js >> /scripts/logs/jd_jd_xgyl.log 2>&1
+# 京东压岁钱(活动时间：2021-2-1至2021-2-11)
+20 * 1-11 2 * node /scripts/jd_newYearMoney.js >> /scripts/logs/jd_newYearMoney.log 2>&1
+# 京东压岁钱抢百元卡(活动时间：2021-2-1至2021-2-11)
+0 9,12,16,20 1-11 2 * node /scripts/jd_newYearMoney_lottery.js >> /scripts/logs/jd_newYearMoney_lottery.log 2>&1
+#环球挑战赛 活动时间：2021-02-02 至 2021-02-22
+0 9,12,20,21 2-22 2 * node /scripts/jd_global.js >> /scripts/logs/jd_global.log 2>&1
+
+0 9,12,20,21 2-15 2 * node /scripts/jd_global_mh.js >> /scripts/logs/jd_global_mh.log 2>&1
+
 ##############长期活动##############
 # 签到
-0 0,18 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
-# 京小超兑换奖品
+3 0,18 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
+# 东东超市兑换奖品
 0,30 0 * * * node /scripts/jd_blueCoin.js >> /scripts/logs/jd_blueCoin.log 2>&1
 # 摇京豆
 0 0 * * * node /scripts/jd_club_lottery.js >> /scripts/logs/jd_club_lottery.log 2>&1
@@ -23,10 +28,8 @@
 15 */2 * * * node /scripts/jd_joy.js >> /scripts/logs/jd_joy.log 2>&1
 # 宠汪汪喂食
 15 */1 * * * node /scripts/jd_joy_feedPets.js >> /scripts/logs/jd_joy_feedPets.log 2>&1
-# 宠汪汪积分兑换奖品
-0 0-16/8 * * * node /scripts/jd_joy_reward.js >> /scripts/logs/jd_joy_reward.log 2>&1
 # 宠汪汪偷好友积分与狗粮
-0 0,6 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
+0 0-10/2 * * * node /scripts/jd_joy_steal.js >> /scripts/logs/jd_joy_steal.log 2>&1
 # 摇钱树
 0 */2 * * * node /scripts/jd_moneyTree.js >> /scripts/logs/jd_moneyTree.log 2>&1
 # 东东萌宠
@@ -58,7 +61,7 @@
 # 京喜工厂
 20 * * * * node /scripts/jd_dreamFactory.js >> /scripts/logs/jd_dreamFactory.log 2>&1
 # 东东小窝
-16 6 * * * node /scripts/jd_small_home.js >> /scripts/logs/jd_small_home.log 2>&1
+16 6,23 * * * node /scripts/jd_small_home.js >> /scripts/logs/jd_small_home.log 2>&1
 # 东东工厂
 36 * * * * node /scripts/jd_jdfactory.js >> /scripts/logs/jd_jdfactory.log 2>&1
 # 十元街
@@ -74,9 +77,7 @@
 # 微信小程序京东赚赚
 10 11 * * * node /scripts/jd_jdzz.js >> /scripts/logs/jd_jdzz.log 2>&1
 # 宠汪汪邀请助力
-10 10,11 * * * node /scripts/jd_joy_run.js >> /scripts/logs/jd_joy_run.log 2>&1
-# 注销京东已开的店铺会员，不是注销京东plus会员，个别店铺无法注销
-44 4 * * 6 node /scripts/jd_unbind.js >> /scripts/logs/jd_unbind.log 2>&1
+10 9-20/2 * * * node /scripts/jd_joy_run.js >> /scripts/logs/jd_joy_run.log 2>&1
 # crazyJoy自动每日任务
 10 7 * * * node /scripts/jd_crazy_joy.js >> /scripts/logs/jd_crazy_joy.log 2>&1
 # 京东汽车旅程赛点兑换金豆
@@ -91,5 +92,11 @@
 27 7 * * * node /scripts/jd_cash.js >> /scripts/logs/jd_cash.log 2>&1
 # 京喜app签到
 39 7 * * * node /scripts/jx_sign.js >> /scripts/logs/jx_sign.log 2>&1
-#京东家庭号(暂不知最佳cron)
-*/20 * * * * node /scripts/jd_family.js >> /scripts/logs/jd_family.log 2>&1
+# 京东家庭号(暂不知最佳cron)
+# */20 * * * * node /scripts/jd_family.js >> /scripts/logs/jd_family.log 2>&1
+# 闪购盲盒
+27 8 * * * node /scripts/jd_sgmh.js >> /scripts/logs/jd_sgmh.log 2>&1
+# 京东秒秒币
+10 7 * * * node /scripts/jd_ms.js >> /scripts/logs/jd_ms.log 2>&1
+# 删除优惠券(默认注释，如需要自己开启，如有误删，已删除的券可以在回收站中还原，慎用)
+#20 9 * * 6 node /scripts/jd_delCoupon.js >> /scripts/logs/jd_delCoupon.log 2>&1
