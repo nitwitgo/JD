@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine
 LABEL AUTHOR="none" \
         VERSION=0.1.3
 
@@ -16,7 +16,6 @@ RUN git clone ${REPO_URL} /scripts \
         && cd /scripts \
         && git checkout master \
         && mkdir logs \
-        && npm config set registry https://registry.npm.taobao.org \
         && npm install
 
 RUN cp /scripts/docker/docker_entrypoint.sh /usr/local/bin \
