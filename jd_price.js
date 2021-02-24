@@ -32,7 +32,7 @@ cron "0 2 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_
  */
 
 const $ = new Env('京东保价');
-
+const notify = $.isNode() ? require('./sendNotify') : '';
 const selfDomain = 'https://msitepp-fm.jd.com/';
 const unifiedGatewayName = 'https://api.m.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -484,6 +484,7 @@ function showMsg() {
           'https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu',
       }
     );
+    notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `京东账号${$.index} ${$.nickName || $.UserName}\n🎉 本次价格保护金额：${$.refundtotalamount}💰`, { url: `https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu` })
   }
 }
 
