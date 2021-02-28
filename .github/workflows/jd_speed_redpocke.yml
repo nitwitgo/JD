@@ -6,7 +6,7 @@ name: jd_speed_redpocke
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 10 * * *'
+    - cron: '0 16 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -49,4 +49,4 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-
+          QYWX_AM: ${{ secrets.QYWX_AM }}
