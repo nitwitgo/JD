@@ -6,7 +6,7 @@ name: jd_live
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 4,6,8 * * *'
+    - cron: '5 12,15,17 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -35,7 +35,7 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京东直播每日18豆】'
+      - name: '运行 【京东直播】'
         run: |
           node jd_live.js
         env:
@@ -50,3 +50,4 @@ jobs:
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
           JD_818_SHAREID_NOTIFY: ${{ secrets.JD_818_SHAREID_NOTIFY }}
+          QYWX_AM: ${{ secrets.QYWX_AM }}
