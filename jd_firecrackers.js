@@ -22,7 +22,7 @@ cron "0 8,21 1-8/1 3 *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/mas
  */
 const $ = new Env('她的节享京豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
-let notifyBean = $.isNode() ? process.env.FIRECRACKERS_NOTITY_BEAN || 120 : 120; // 账号满足兑换多少京豆时提示 默认 0 不提示，格式：120 表示能兑换 120 豆子发出通知;
+let notifyBean = $.isNode() ? process.env.FIRECRACKERS_NOTITY_BEAN || 35 : 35; // 账号满足兑换多少京豆时提示 默认 0 不提示，格式：120 表示能兑换 120 豆子发出通知;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 //IOS等用户直接用NobyDa的jd cookie
@@ -88,7 +88,7 @@ function showMsg() {
       for (let item of $.prize) {
         if (notifyBean <= item.beansPerNum) { // 符合预定的京豆档位
           if ($.total >= item.prizerank) { // 当前鞭炮满足兑换
-            message += `【京豆】请手动兑换 ${item.beansPerNum} 个京豆，需消耗花费🧨 ${item.prizerank}`
+            message += `【京豆】请手动兑换 ${item.beansPerNum} 个京豆，需消耗花费🧨 ${item.prizerank}\n活动地址：https://linggame.jd.com/babelDiy/Zeus/3Y7JfoyA2Nwoa4FRqgDY4WpVjfgP/index.html`
             $.msg($.name, subTitle, message);
             if ($.isNode()) {
               await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `${subTitle}\n${message}`);
